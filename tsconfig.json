@@ -1,22 +1,16 @@
 {
-  "files": [],
+  "include": ["src", "src/react-typed.d.ts"],
   "references": [
-    {
-      "path": "./tsconfig.app.json"
-    },
-    {
-      "path": "./tsconfig.node.json"
-    }
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     },
-    "module": "commonjs",
-    "target": "es5",
+    "module": "esnext",          // 🔄 Changed for modern React compatibility
+    "target": "es6",             // 🔄 Improved for better performance
     "removeComments": false,
     "moduleResolution": "node"
   }
