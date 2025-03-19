@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar";
 import Footer from "../../../components/footer";
+import { toast, Toaster } from "sonner";
+import { request } from "http";
 
 interface LabRequest {
 	id: number;
@@ -90,6 +92,7 @@ function RouteComponent(): JSX.Element {
 					requests, //here all requests whose id is not equal to id of rejected id will be removed and rest o the request will be shown
 				) => requests.filter((request) => request.id != requestId),
 			);
+			toast.error(`Request for ${requestUpdate.labType} rejected Kindly book lab on the other slot`);
 		} else {
 			setLabRequests((requests) =>
 				requests.map((request) =>
@@ -105,11 +108,13 @@ function RouteComponent(): JSX.Element {
 					available: Math.max(prevStatus[labTypeKey].available - 1, 0), // Accesses `available` property correctly
 				},
 			}));
+			toast.success(`Lab request for  ${requestUpdate.labType} Approved`);
 		}
 	};
 	return (
 		<div className="min-h-screen bg-gray-50 ">
 			<Navbar />
+			<Toaster richColors/>
 			<div className="max-w-6xl mx-auto">
 				<h1 className="text-3xl font-bold text-gray-800 mb-8">
 					Admin Dashboard
