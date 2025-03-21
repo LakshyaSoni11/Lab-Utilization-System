@@ -1,0 +1,35 @@
+backend/
+├── src/
+│   ├── config/
+│   │   ├── db.js               # Database connection
+│   │   ├── env.js              # Environment variable configuration
+│   ├── controllers/
+│   │   ├── adminController.js  # Handles admin-related operations
+│   │   ├── facultyController.js # Handles faculty-related operations
+│   │   ├── studentController.js # Handles student-related operations
+│   │   ├── authController.js    # Authentication management
+│   ├── middlewares/
+│   │   ├── authMiddleware.js   # JWT and role-based authentication
+│   │   ├── errorMiddleware.js  # Error handling
+│   ├── models/
+│   │   ├── User.js             # User model (admin, faculty, student)
+│   │   ├── Lab.js              # Lab model
+│   │   ├── Request.js          # Lab request model
+│   ├── routes/
+│   │   ├── adminRoutes.js      # Admin API routes
+│   │   ├── facultyRoutes.js    # Faculty API routes
+│   │   ├── studentRoutes.js    # Student API routes
+│   │   ├── authRoutes.js       # Authentication routes
+│   ├── utils/
+│   │   ├── generateToken.js    # JWT token generation
+│   │   ├── validateInput.js    # Input validation functions
+│   ├── database/
+│   │   ├── migrations/
+│   │   │   ├── initial-schema.sql  # PostgreSQL Database schema
+│   │   ├── models/
+│   │   │   ├── index.js        # Sequelize model initialization
+│   ├── app.js                  # Express app setup
+│   ├── server.js               # Entry point
+├── .env                       # Environment variables
+├── package.json               # Dependencies and scripts
+├── README.md                  # Backend documentation
