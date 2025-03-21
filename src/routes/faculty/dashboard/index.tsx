@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useState } from "react";
 import Footer from "../../../components/footer";
 import Navbar from "../../../components/Navbar";
-
+import { Toaster,toast } from "sonner";
 export const Route = createFileRoute("/faculty/dashboard/")({
 	component: RouteComponent,
 });
@@ -43,9 +43,55 @@ function RouteComponent(): JSX.Element {
 		let newMin = totMin % 60;
 		return `${newHour.toString().padStart(2, "0")}:${newMin.toString().padStart(2, "0")}`;
 	};
+	const isConflict =requests.some(
+		(req) =>{
+			req.labType === labRequest.labType &&
+			req.date === labRequest.date && 
+			req.duration === labRequest.duration
+		}
+	)
+	if(isConflict){
+		toast.error("Their is a conflict with the time kindli try bookig in another slot");
+		console.log("error should come toast")
+	}
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const timeToMinutes = (time: string): number => {
+		const [hours, minutes] = time.split(":").map(Number);
+		return hours * 60 + minutes;
+	};
+	// const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+	
+		// Time conflict check
+		const newStartTime = labRequest.time;
+		const newEndTime = totalTime(labRequest.time, labRequest.duration);
+		const startMin = timeToMinutes(newStartTime);
+		const endMin =  timeToMinutes(newEndTime);
+		const TimeOut = startMin < 480 || endMin >1080;
+		if(TimeOut){
+			toast.error("Cannot book lab in this particular slot");
+			console.log("timing not suited error");
+			return;
+		}
+		const isConflict = requests.some((req) => {
+			if (req.labType === labRequest.labType && req.date === labRequest.date) {
+				const [existingStart, existingEnd] = req.duration.split(" to ");
+				return (
+					(newStartTime >= existingStart && newStartTime < existingEnd) || // Overlaps at the start
+					(newEndTime > existingStart && newEndTime <= existingEnd) ||      // Overlaps at the end
+					(newStartTime <= existingStart && newEndTime >= existingEnd)      // Encloses existing slot
+				);
+			}
+			return false;
+		});
+	
+		if (isConflict) {
+			toast.error("There is a conflict with the time. Kindly try booking another slot.");
+			console.log("Conflict detected: Toast error should appear.");
+			return;
+		}
+	
 		console.log("Lab request submitted:", labRequest);
 		const newRequest: Request = {
 			id: requests.length + 1,
@@ -54,19 +100,22 @@ function RouteComponent(): JSX.Element {
 			date: labRequest.date,
 			duration: `${labRequest.time} to ${totalTime(labRequest.time, labRequest.duration)}`,
 		};
-		await fetch("/api/lab-requests.ts", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(newRequest),
-		});
+	
+		// await fetch("/api/lab-requests.ts", {
+		// 	method: "POST",
+		// 	headers: { "Content-Type": "application/json" },
+		// 	body: JSON.stringify(newRequest),
+		// });
+	
 		setRequests((prevRequests) => [...prevRequests, newRequest]);
+		toast.success(`Lab request for ${newRequest.labType} Lab sent successfully.`);
 	};
+
 
 	return (
 		<div className="min-h-screen bg-gray-50 ">
 			<Navbar />
+			<Toaster richColors/>
 			<div className="max-w-6xl mx-auto mt-10">
 				<h1 className="text-3xl font-bold text-gray-800 mb-10 text-center">
 					Faculty Dashboard
@@ -108,6 +157,7 @@ function RouteComponent(): JSX.Element {
 									onChange={(e) =>
 										setLabRequest({ ...labRequest, subject: e.target.value })
 									}
+									required
 								/>
 							</div>
 
@@ -123,6 +173,7 @@ function RouteComponent(): JSX.Element {
 										onChange={(e) =>
 											setLabRequest({ ...labRequest, date: e.target.value })
 										}
+										required
 									/>
 								</div>
 								<div>
@@ -136,6 +187,7 @@ function RouteComponent(): JSX.Element {
 										onChange={(e) =>
 											setLabRequest({ ...labRequest, time: e.target.value })
 										}
+										required
 									/>
 								</div>
 							</div>
@@ -151,6 +203,7 @@ function RouteComponent(): JSX.Element {
 									onChange={(e) =>
 										setLabRequest({ ...labRequest, duration: e.target.value })
 									}
+									required
 								/>
 							</div>
 
@@ -168,6 +221,7 @@ function RouteComponent(): JSX.Element {
 											description: e.target.value,
 										})
 									}
+									required
 								></textarea>
 							</div>
 
