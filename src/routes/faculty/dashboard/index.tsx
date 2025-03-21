@@ -54,13 +54,26 @@ function RouteComponent(): JSX.Element {
 		toast.error("Their is a conflict with the time kindli try bookig in another slot");
 		console.log("error should come toast")
 	}
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+	const timeToMinutes = (time: string): number => {
+		const [hours, minutes] = time.split(":").map(Number);
+		return hours * 60 + minutes;
+	};
+	// const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit =  (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 	
 		// Time conflict check
 		const newStartTime = labRequest.time;
 		const newEndTime = totalTime(labRequest.time, labRequest.duration);
-	
+		const startMin = timeToMinutes(newStartTime);
+		const endMin =  timeToMinutes(newEndTime);
+		const TimeOut = startMin < 480 || endMin >1080;
+		if(TimeOut){
+			toast.error("Cannot book lab in this particular slot");
+			console.log("timing not suited error");
+			return;
+		}
 		const isConflict = requests.some((req) => {
 			if (req.labType === labRequest.labType && req.date === labRequest.date) {
 				const [existingStart, existingEnd] = req.duration.split(" to ");
@@ -88,14 +101,14 @@ function RouteComponent(): JSX.Element {
 			duration: `${labRequest.time} to ${totalTime(labRequest.time, labRequest.duration)}`,
 		};
 	
-		await fetch("/api/lab-requests.ts", {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify(newRequest),
-		});
+		// await fetch("/api/lab-requests.ts", {
+		// 	method: "POST",
+		// 	headers: { "Content-Type": "application/json" },
+		// 	body: JSON.stringify(newRequest),
+		// });
 	
 		setRequests((prevRequests) => [...prevRequests, newRequest]);
-		toast.success("Lab booked successfully.");
+		toast.success(`Lab request for ${newRequest.labType} Lab sent successfully.`);
 	};
 
 
@@ -144,6 +157,7 @@ function RouteComponent(): JSX.Element {
 									onChange={(e) =>
 										setLabRequest({ ...labRequest, subject: e.target.value })
 									}
+									required
 								/>
 							</div>
 
@@ -159,6 +173,7 @@ function RouteComponent(): JSX.Element {
 										onChange={(e) =>
 											setLabRequest({ ...labRequest, date: e.target.value })
 										}
+										required
 									/>
 								</div>
 								<div>
@@ -172,6 +187,7 @@ function RouteComponent(): JSX.Element {
 										onChange={(e) =>
 											setLabRequest({ ...labRequest, time: e.target.value })
 										}
+										required
 									/>
 								</div>
 							</div>
@@ -187,6 +203,7 @@ function RouteComponent(): JSX.Element {
 									onChange={(e) =>
 										setLabRequest({ ...labRequest, duration: e.target.value })
 									}
+									required
 								/>
 							</div>
 
@@ -204,6 +221,7 @@ function RouteComponent(): JSX.Element {
 											description: e.target.value,
 										})
 									}
+									required
 								></textarea>
 							</div>
 

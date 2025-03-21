@@ -9,8 +9,14 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "module": "esnext",          // 🔄 Changed for modern React compatibility
-    "target": "es6",             // 🔄 Improved for better performance
+    // "module": "esnext",          // 🔄 Changed for modern React compatibility
+    // "target": "es6", 
+    "target": "ES6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true ,           // 🔄 Improved for better performance
     "removeComments": false,
     "moduleResolution": "node"
   }
