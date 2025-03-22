@@ -7,7 +7,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]
     },
     // "module": "esnext",          // 🔄 Changed for modern React compatibility
     // "target": "es6", 

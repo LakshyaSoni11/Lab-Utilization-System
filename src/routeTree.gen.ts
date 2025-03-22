@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as StudentsIndexImport } from './routes/students/index'
 import { Route as LoginIndexImport } from './routes/login/index'
+import { Route as CalendarIndexImport } from './routes/calendar/index'
 import { Route as FacultyDashboardIndexImport } from './routes/faculty/dashboard/index'
 import { Route as AdminDashboardIndexImport } from './routes/admin/dashboard/index'
 
@@ -34,6 +35,12 @@ const StudentsIndexRoute = StudentsIndexImport.update({
 const LoginIndexRoute = LoginIndexImport.update({
   id: '/login/',
   path: '/login/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const CalendarIndexRoute = CalendarIndexImport.update({
+  id: '/calendar/',
+  path: '/calendar/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -58,6 +65,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/calendar/': {
+      id: '/calendar/'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof CalendarIndexImport
       parentRoute: typeof rootRoute
     }
     '/login/': {
@@ -95,6 +109,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarIndexRoute
   '/login': typeof LoginIndexRoute
   '/students': typeof StudentsIndexRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
@@ -103,6 +118,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/calendar': typeof CalendarIndexRoute
   '/login': typeof LoginIndexRoute
   '/students': typeof StudentsIndexRoute
   '/admin/dashboard': typeof AdminDashboardIndexRoute
@@ -112,6 +128,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/calendar/': typeof CalendarIndexRoute
   '/login/': typeof LoginIndexRoute
   '/students/': typeof StudentsIndexRoute
   '/admin/dashboard/': typeof AdminDashboardIndexRoute
@@ -122,15 +139,23 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/calendar'
     | '/login'
     | '/students'
     | '/admin/dashboard'
     | '/faculty/dashboard'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/students' | '/admin/dashboard' | '/faculty/dashboard'
+  to:
+    | '/'
+    | '/calendar'
+    | '/login'
+    | '/students'
+    | '/admin/dashboard'
+    | '/faculty/dashboard'
   id:
     | '__root__'
     | '/'
+    | '/calendar/'
     | '/login/'
     | '/students/'
     | '/admin/dashboard/'
@@ -140,6 +165,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CalendarIndexRoute: typeof CalendarIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
   StudentsIndexRoute: typeof StudentsIndexRoute
   AdminDashboardIndexRoute: typeof AdminDashboardIndexRoute
@@ -148,6 +174,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CalendarIndexRoute: CalendarIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
   StudentsIndexRoute: StudentsIndexRoute,
   AdminDashboardIndexRoute: AdminDashboardIndexRoute,
@@ -165,6 +192,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/calendar/",
         "/login/",
         "/students/",
         "/admin/dashboard/",
@@ -173,6 +201,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/calendar/": {
+      "filePath": "calendar/index.tsx"
     },
     "/login/": {
       "filePath": "login/index.tsx"

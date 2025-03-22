@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import React, { useRef } from "react";
 // import { Typed } from "react-typed"; // ✅ Correct import for named export
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import { Home, User, Briefcase, FileText } from 'lucide-react'
+import { NavBar } from "@/components/ui/tubelight-navbar"
 // Import Swiper core and required modules
 import "swiper/css";
 import "swiper/css/pagination";
@@ -18,8 +19,9 @@ import Footer from "../components/footer";
 
 // Swiper type import for reference
 import type { Swiper as SwiperType } from "swiper";
-import  Typed  from "../components/TypingEffect";
-
+import Typed from "../components/TypingEffect";
+import { GradientButton } from "../components/ui/gradient-button";
+// import { GradientButton } from "../components/ui/gradient-button";
 // Route definition using TanStack Router
 export const Route = createFileRoute("/")({
 	component: () => <RouteComponent />,
@@ -74,12 +76,11 @@ function RouteComponent(): JSX.Element {
 
 	// Reference for Swiper instance to control navigation
 	const swiperRef = useRef<SwiperType | null>(null);
-    
 
 	return (
 		<div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
 			{/* Navbar Component */}
-			<Navbar />
+			{/* <Navbar /> */}
 
 			{/* Main Content */}
 			<div className="max-w-6xl mx-auto px-4 py-8">
@@ -96,12 +97,14 @@ function RouteComponent(): JSX.Element {
 
 					{/* CTA Buttons */}
 					<div className="mt-8 flex justify-center gap-4">
-						<button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md">
+						{/* <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md">
 							Get Started
 						</button>
 						<button className="px-6 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg hover:bg-blue-50 transition-colors shadow-sm">
 							Learn More
-						</button>
+						</button> */}
+						<GradientButton variant="variant">Get Started</GradientButton>
+						<GradientButton>Learn More</GradientButton>
 					</div>
 				</div>
 
@@ -114,7 +117,7 @@ function RouteComponent(): JSX.Element {
 					{/* Typed Animation for Features */}
 					<div className="flex justify-center gap-4 mb-8 text-4xl font-medium text-black-600">
 						<div className="flex justify-center gap-4 mb-8 text-4xl font-medium mt-3">
-							<Typed/>
+							<Typed />
 						</div>
 					</div>
 				</div>

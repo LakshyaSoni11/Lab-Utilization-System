@@ -92,7 +92,9 @@ function RouteComponent(): JSX.Element {
 					requests, //here all requests whose id is not equal to id of rejected id will be removed and rest o the request will be shown
 				) => requests.filter((request) => request.id != requestId),
 			);
-			toast.error(`Request for ${requestUpdate.labType} rejected Kindly book lab on the other slot`);
+			toast.error(
+				`Request for ${requestUpdate.labType} rejected Kindly book lab on the other slot`,
+			);
 		} else {
 			setLabRequests((requests) =>
 				requests.map((request) =>
@@ -114,7 +116,7 @@ function RouteComponent(): JSX.Element {
 	return (
 		<div className="min-h-screen bg-gray-50 ">
 			<Navbar />
-			<Toaster richColors/>
+			<Toaster richColors />
 			<div className="max-w-6xl mx-auto">
 				<h1 className="text-3xl font-bold text-gray-800 mb-8">
 					Admin Dashboard
